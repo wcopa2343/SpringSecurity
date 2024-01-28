@@ -1,5 +1,6 @@
 package com.demo.dh.security.config.security;
 
+import com.demo.dh.security.util.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,9 @@ public class HttpSecurityConfig {
                     authConfig.requestMatchers(HttpMethod.POST,"/auth/authenticate").permitAll();
                     authConfig.requestMatchers(HttpMethod.GET,"/auth/public-access").permitAll();
                     authConfig.requestMatchers("/error").permitAll();
+                    authConfig.requestMatchers(HttpMethod.GET,"/product").hasAuthority(Permission.READ_ALL_PRODUCTS.name());
+                    authConfig.requestMatchers(HttpMethod.POST,"/product").hasAuthority(Permission.SAVE_ONE_PRODUCT.name());
+                    authConfig.anyRequest().denyAll();
                 })
         ;
 
