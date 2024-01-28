@@ -18,6 +18,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityBeansInjector {
 
+    private UserRepository userRepository;
+
+    public SecurityBeansInjector(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -26,8 +32,8 @@ public class SecurityBeansInjector {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(null);
-        // provider.setPasswordEncoder();
+        provider.setUserDetailsService(this.userDetailsService());
+        provider.setPasswordEncoder(this.passwordEncoder());
 
         return provider;
     }
@@ -38,10 +44,14 @@ public class SecurityBeansInjector {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository){
+    public UserDetailsService userDetailsService(){
         return username -> {
-            return userRepository.findByUsername(username)
+            return this.userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("User not found"));
         };
     }
+
+
+    // El ususairo Logueado es la interfaz Authentication.
+    // UserDetails representa al usuario de BD.
 }
