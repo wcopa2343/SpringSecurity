@@ -1,9 +1,12 @@
 package com.demo.dh.security.util;
 
+import lombok.Getter;
+
 import java.util.List;
 import java.util.Arrays;
 
 
+@Getter
 public enum Role {
     CUSTOMER(Arrays.asList(Permission.READ_ALL_PRODUCTS)),
 
@@ -13,10 +16,6 @@ public enum Role {
 
     Role(List<Permission> permissions) {
         this.permissions = permissions;
-    }
-
-    public List<Permission> getPermissions() {
-        return permissions;
     }
 
     public void setPermissions(List<Permission> permissions) {
