@@ -3,6 +3,7 @@ package com.demo.dh.security.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,7 +27,13 @@ public class HttpSecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagementConfig -> sessionManagementConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(this.authenticationProvider);
+                .authenticationProvider(this.authenticationProvider)
+                .authorizeHttpRequests(authConfig -> {
+                    authConfig.requestMatchers(HttpMethod.POST,"/auth/authenticate").permitAll();
+                    authConfig.requestMatchers(HttpMethod.GET,"/auth/public-access").permitAll();
+                    authConfig.requestMatchers("/error").permitAll();
+                })
+        ;
 
 
         return httpSecurity.build();
