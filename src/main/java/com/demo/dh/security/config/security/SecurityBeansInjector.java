@@ -40,14 +40,10 @@ public class SecurityBeansInjector {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return username -> {
             return this.userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("User not found"));
         };
     }
-
-
-    // El ususairo Logueado es la interfaz Authentication.
-    // UserDetails representa al usuario de BD.
 }
