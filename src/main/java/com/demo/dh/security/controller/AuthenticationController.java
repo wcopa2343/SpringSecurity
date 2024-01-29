@@ -2,6 +2,7 @@ package com.demo.dh.security.controller;
 
 import com.demo.dh.security.dto.AuthenticationRequest;
 import com.demo.dh.security.dto.AuthenticationResponse;
+import com.demo.dh.security.service.login.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +11,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("auth")
 public class AuthenticationController {
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody @Validated AuthenticationRequest request) {
+    private AuthenticationService authenticationService;
 
-        return null;
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> loginAuth(@RequestBody @Validated AuthenticationRequest request) {
+
+        AuthenticationResponse jwtDto = authenticationService.login(request);
+
+        return ResponseEntity.ok(jwtDto);
     }
 
     @GetMapping("/public-access")
