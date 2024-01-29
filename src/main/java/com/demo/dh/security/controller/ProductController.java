@@ -13,12 +13,11 @@ import java.util.List;
 @RequestMapping("product")
 public class ProductController {
 
-    @Autowired
     private ProductService productService;
 
-//    public ProductController(ProductService productService) {
-//        this.productService = productService;
-//    }
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<Product>> listProducts() {

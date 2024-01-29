@@ -12,6 +12,10 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
 
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
     @Override
     public Product createOne(Product productDto) {
         return this.productRepository.save(productDto);

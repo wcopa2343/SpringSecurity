@@ -1,6 +1,7 @@
 package com.demo.dh.security.service.login;
 
 import com.demo.dh.security.model.entity.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -39,7 +40,15 @@ public class JwtServiceImpl {
     }
 
     private Key generateKey() {
-        System.out.println("MAIN KEY: " + SECRET_KEY);
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    }
+
+    public String extractUsername(String jwt) {
+        return extractAllClaims(jwt).getSubject();
+    }
+
+    private Claims extractAllClaims(String jwt) {
+        return Jwts.parser().setSigningKey(this.generateKey()).build()
+                .parseClaimsJws(jwt).getBody();
     }
 }
