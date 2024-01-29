@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
+@Table(name = "tbl_user")
 public class User implements UserDetails {
 
     @Id
